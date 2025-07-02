@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Estoque e Vendas</title>
+  <style>
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button, select {
+      padding: 8px;
+      margin: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+    }
+    h2 {
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Controle de Estoque e Vendas</h1>
+
+  <!-- Adicionar Produto -->
+  <section>
+    <h2>Adicionar Produto</h2>
+    <input type="text" id="nomeProduto" placeholder="Nome do Produto">
+    <input type="number" id="quantidadeProduto" placeholder="Quantidade">
+    <input type="number" id="precoProduto" placeholder="Preço">
+    <button onclick="adicionarProduto()">Adicionar</button>
+  </section>
+
+  <!-- Ver Estoque -->
+  <section>
+    <h2>Estoque Atual</h2>
+    <table id="tabelaEstoque">
+      <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Preço (R$)</th>
+      </tr>
+    </table>
+  </section>
+
+  <!-- Realizar Venda -->
+  <section>
+    <h2>Realizar Venda</h2>
+    <select id="produtoVenda"></select>
+    <input type="number" id="quantidadeVenda" placeholder="Quantidade">
+    <button onclick="realizarVenda()">Vender</button>
+  </section>
+
+  <!-- Histórico de Vendas -->
+  <section>
+    <h2>Histórico de Vendas</h2>
+    <table id="tabelaVendas">
+      <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Preço Total</th>
+        <th>Data</th>
+      </tr>
+    </table>
+  </section>
+
+  <script>
+    let estoque = JSON.parse(localStorage.getItem('estoque')) || [];
+    let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+
+    function salvarDados() {
+      localStorage.setItem('estoque', JSON.stringify(estoque));
+      localStorage.setItem('vendas', JSON.stringify(vendas));
+    }
+
+    function atualizarTabelas() {
+      const tabelaEstoque = document.getElementById('tabelaEstoque');
+      const tabelaVendas = document.getElementById('tabelaVendas');
+      const produtoVenda = document.getElementById('produtoVenda');
+
+      // Atualiza Estoque
+      tabelaEstoque.innerHTML = '<tr><th>Produto</th><th>Quantidade</th><th>Preço (R$)</th></tr>';
+      produtoVenda.innerHTML = '';
+      estoque.forEach((item, index) => {
+        tabelaEstoque.innerHTML += `<tr><td>${item.nome}</td><td>${item.quantidade}</td><td>${item.preco.toFixed(2)}</td></tr>`;
+        produtoVenda.innerHTML += `<option value="${index}">${item.nome}</option>`;
+      });
+
+      // Atualiza Vendas
+      tabelaVendas.innerHTML = '<tr><th>Produto</th><th>Quantidade</th><th>Preço Total</th><th>Data</th></tr>';
+      vendas.forEach(v => {
+        tabelaVendas.innerHTML += `<tr><td>${v.produto}</td><td>${v.quantidade}</td><td>R$ ${v.total.toFixed(2)}</td><td>${v.data}</td></tr>`;
+      });
+    }
+
+    function adicionarProduto() {
+      const nome = document.getElementById('nomeProduto').value.trim();
+      const quantidade = parseInt(document.getElementById('quantidadeProduto').value);
+      const preco = parseFloat(document.getElementById('precoProduto').value);
+
+      if (!nome || isNaN(quantidade) || isNaN(preco)) {
+        alert("Preencha todos os campos corretamente.");
+        return;
+      }
+
+      const existente = estoque.find(p => p.nome.toLowerCase() === nome.toLowerCase());
+      if (existente) {
+        existente.quantidade += quantidade;
+        existente.preco = preco; // Atualiza o preço se necessário
+      } else {
+        estoque.push({ nome, quantidade, preco });
+      }
+
+      salvarDados();
+      atualizarTabelas();
+    }
+
+    function realizarVenda() {
+      const index = parseInt(document.getElementById('produtoVenda').value);
+      const quantidade = parseInt(document.getElementById('quantidadeVenda').value);
+      if (isNaN(index) || isNaN(quantidade) || quantidade <= 0) {
+        alert("Selecione um produto e uma quantidade válida.");
+        return;
+      }
+
+      const produto = estoque[index];
+      if (produto.quantidade < quantidade) {
+        alert("Estoque insuficiente.");
+        return;
+      }
+
+      produto.quantidade -= quantidade;
+      const total = produto.preco * quantidade;
+      vendas.push({
+        produto: produto.nome,
+        quantidade,
+        total,
+        data: new Date().toLocaleString()
+      });
+
+      salvarDados();
+      atualizarTabelas();
+    }
+
+    atualizarTabelas();
+  </script>
+</body>
+</html>

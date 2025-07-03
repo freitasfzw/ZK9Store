@@ -1,81 +1,276 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Estoque e Vendas</title>
-  <style>
-    body {
-      background: #121212;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    nav {
-      margin-bottom: 20px;
-    }
-    nav button {
-      background-color: #333;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      margin-right: 5px;
-      cursor: pointer;
-    }
-    nav button.active {
-      background-color: #6200ea;
-    }
-    input, button, select {
-      padding: 8px;
-      margin: 5px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #333;
-      padding: 8px;
-      text-align: left;
-    }
-    h2 {
-      border-bottom: 1px solid #555;
-      padding-bottom: 5px;
-    }
-    section {
-      display: none;
-    }
-    section.active {
-      display: block;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZK9 Store - Sistema</title>
+<style>
+  :root {
+  /* Cor principal */
+  --cor-principal: #8d0000;
+
+  /* Tons de vermelho escuro */
+  --vermelho-escuro: #660000;
+  --vermelho-medio: #a30000;
+  --vermelho-claro: #c73333;
+
+  /* Fundo escuro */
+  --fundo-principal: #121212;
+  --fundo-secundario: #252525;
+  --fundo-terciario: #4b4b4b;
+
+  /* Texto */
+  --texto-principal: #ffffff;
+  --texto-secundario: #cccccc;
+  --texto-terciario: #999999;
+
+  /* Bordas e detalhes */
+  --borda-clara: #333333;
+  --borda-escura: #1a1a1a;
+
+  /* Destaques e hover */
+  --hover-cor: #b70000;
+  --destaque: #ff4d4d;
+}
+
+body {
+  background-color: var(--fundo-principal);
+  color: var(--texto-principal);
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+  min-width: 100vw; /* garante largura total */
+  display: flex;
+  flex-direction: column;
+  /* remove align-items: center para evitar centralização horizontal */
+  /* adiciona alinhamento padrão */
+  align-items: stretch; 
+}
+
+/* Foto do perfil no topo direito */
+#areaPerfil {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  z-index: 100;
+}
+
+#fotoPerfil {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-principal);
+  object-fit: cover;
+  transition: box-shadow 0.3s ease;
+}
+
+#areaPerfil:hover #fotoPerfil {
+  box-shadow: 0 0 10px var(--cor-principal);
+}
+
+#nomeUsuario {
+  font-weight: 700;
+  color: var(--cor-principal);
+}
+
+nav {
+  margin-bottom: 20px;
+  display: none;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+nav button {
+  background-color: var(--fundo-secundario);
+  color: var(--texto-principal);
+  border: 2px solid var(--cor-principal);
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+  
+}
+
+nav button.active,
+nav button:hover {
+  background-color: var(--cor-principal);
+  color: var(--texto-principal);
+  border-color: var(--hover-cor);
+  box-shadow: 0 0 8px var(--cor-principal);
+}
+
+input,
+button,
+select {
+  padding: 10px;
+  margin: 8px 5px;
+  border-radius: 6px;
+  border: 1.5px solid var(--borda-clara);
+  background-color: var(--fundo-secundario);
+  color: var(--texto-principal);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  max-width: 400px; /* limita largura para inputs e botões */
+  box-sizing: border-box;
+
+}
+
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border-color: var(--cor-principal);
+  box-shadow: 0 0 6px var(--cor-principal);
+}
+
+button {
+  cursor: pointer;
+  background-color: var(--cor-principal);
+  border: none;
+  font-weight: 700;
+  transition: background-color 0.3s ease;
+  max-width: 400px;
+}
+
+button:hover {
+  background-color: var(--hover-cor);
+}
+
+table {
+  width: 100%;
+  max-width: 900px; /* limita largura máxima */
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: var(--fundo-secundario);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(141, 0, 0, 0.5);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th,
+td {
+  border: 1px solid var(--borda-clara);
+  padding: 12px 15px;
+  text-align: left;
+  color: var(--texto-principal);
+}
+
+th {
+  background-color: var(--vermelho-escuro);
+  font-weight: 700;
+}
+
+h1 {
+    text-align: center;
+  padding-bottom: 10px;
+  color: var(--texto-principal);
+  text-shadow: 0 0 6px var(--cor-principal);
+  user-select: none;
+}
+h2 {
+  text-align: center;
+  padding-bottom: 10px;
+  color: var(--texto-principal);
+  text-shadow: 0 0 6px var(--cor-principal);
+  user-select: none;
+}
+
+section {
+  display: none;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  background-color: var(--fundo-secundario); /* fundo secundário para as abas */
+  padding: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px rgba(141, 0, 0, 0.4); /* sombra leve para destacar */
+}
+
+section.active {
+  display: block;
+}
+
+
+.botao-painel {
+  /* Você pode esconder este botão para usuários limitados via JS */
+}
+
+/* Scroll customizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fundo-secundario);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--cor-principal);
+  border-radius: 10px;
+  border: 2px solid var(--fundo-secundario);
+}
+
+</style>
 </head>
+
 <body>
-  <h1>Controle de Estoque e Vendas</h1>
+  <h1>Sistema de Controle ZK9 Store</h1>
 
-  <!-- Menu de Abas -->
-  <nav>
-    <button onclick="mostrarAba('abaAdicionar')" class="active">Adicionar Produto</button>
-    <button onclick="mostrarAba('abaEstoque')">Estoque</button>
-    <button onclick="mostrarAba('abaVenda')">Venda</button>
-    <button onclick="mostrarAba('abaHistorico')">Histórico</button>
-  </nav>
+  <!-- Área do Perfil -->
+  <div id="areaPerfil" title="Clique para desconectar">
+    <img id="fotoPerfil" src="" alt="Foto do Perfil" />
+    <span id="nomeUsuario"></span>
+  </div>
 
-  <!-- Adicionar Produto -->
-  <section id="abaAdicionar" class="active">
-    <h2>Adicionar Produto</h2>
-    <input type="text" id="nomeProduto" placeholder="Nome do Produto">
-    <input type="number" id="quantidadeProduto" placeholder="Quantidade">
-    <input type="number" id="precoProduto" placeholder="Preço">
-    <button onclick="adicionarProduto()">Adicionar</button>
+  <!-- Tela Login -->
+  <section id="telaLogin" class="active">
+    <h2>Login</h2>
+    <input type="text" id="inputUsuario" placeholder="Usuário" autocomplete="username" />
+    <input type="password" id="inputSenha" placeholder="Senha" autocomplete="current-password" />
+    <button onclick="fazerLogin()">Entrar</button>
   </section>
 
-  <!-- Ver Estoque -->
-  <section id="abaEstoque">
+  <!-- Menu de navegação -->
+  <nav id="menuPrincipal">
+    <button onclick="mostrarAba('abaAdicionar')">Adicionar Produto</button>
+    <button onclick="mostrarAba('abaVenda')">Registrar Venda</button>
+    <button onclick="mostrarAba('abaHistorico')" class="botao-painel">Painel de Controle</button>
+  </nav>
+
+  <!-- Abas -->
+  <section id="abaAdicionar">
+    <h2>Adicionar Produto</h2>
+    <input type="text" id="codigoProduto" placeholder="Código do Produto" />
+    <input type="text" id="nomeProduto" placeholder="Nome do Produto" />
+    <input type="number" id="quantidadeProduto" placeholder="Quantidade" />
+    <input type="number" id="precoProduto" placeholder="Preço" />
+    <button onclick="adicionarProduto()">Adicionar</button>
+
+    <hr />
+
     <h2>Estoque Atual</h2>
     <table id="tabelaEstoque">
       <tr>
+        <th>Código</th>
         <th>Produto</th>
         <th>Quantidade</th>
         <th>Preço (R$)</th>
@@ -83,15 +278,13 @@
     </table>
   </section>
 
-  <!-- Realizar Venda -->
   <section id="abaVenda">
-    <h2>Realizar Venda</h2>
+    <h2>Registrar Venda</h2>
     <select id="produtoVenda"></select>
-    <input type="number" id="quantidadeVenda" placeholder="Quantidade">
+    <input type="number" id="quantidadeVenda" placeholder="Quantidade" />
     <button onclick="realizarVenda()">Vender</button>
   </section>
 
-  <!-- Histórico de Vendas -->
   <section id="abaHistorico">
     <h2>Histórico de Vendas</h2>
     <table id="tabelaVendas">
@@ -105,50 +298,153 @@
   </section>
 
   <script>
-    let estoque = JSON.parse(localStorage.getItem('estoque')) || [];
-    let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+    // Usuários e permissões
+    let usuarioAtual = null;
+    const usuarios = {
+      admin: { senha: "1234", acesso: "total", foto: "admin.jpg", nome: "Administrador" },
+      vendedor: { senha: "abcd", acesso: "parcial", foto: "vendedor.jpeg", nome: "Vendedor" },
+    };
+
+    // Checa se há usuário salvo no localStorage e restaura login
+    window.onload = () => {
+      const salvo = localStorage.getItem("usuarioAtual");
+      if (salvo && usuarios[salvo]) {
+        usuarioAtual = salvo;
+        carregarInterfacePosLogin();
+      }
+      atualizarTabelas();
+    };
+
+    function fazerLogin() {
+      const usuario = document.getElementById("inputUsuario").value.trim();
+      const senha = document.getElementById("inputSenha").value.trim();
+
+      if (!usuarios[usuario]) {
+        alert("Usuário inválido");
+        return;
+      }
+      if (usuarios[usuario].senha !== senha) {
+        alert("Senha incorreta");
+        return;
+      }
+
+      usuarioAtual = usuario;
+      localStorage.setItem("usuarioAtual", usuarioAtual);
+
+      carregarInterfacePosLogin();
+    }
+
+    function carregarInterfacePosLogin() {
+      // Oculta login e mostra tela inicial e menu
+      document.getElementById("telaLogin").classList.remove("active");
+      document.getElementById("telaLogin").style.display = "none";
+
+      const menu = document.getElementById("menuPrincipal");
+      menu.style.display = "block";
+
+      // Atualiza foto e nome do perfil e mostra área do perfil
+      const fotoPerfil = document.getElementById("fotoPerfil");
+      const nomeUsuario = document.getElementById("nomeUsuario");
+      fotoPerfil.src = usuarios[usuarioAtual].foto;
+      nomeUsuario.textContent = usuarios[usuarioAtual].nome;
+      document.getElementById("areaPerfil").style.display = "flex";
+
+      ajustarInterfacePorUsuario();
+      atualizarTabelas();
+    }
+
+    function ajustarInterfacePorUsuario() {
+      if (usuarios[usuarioAtual].acesso === "parcial") {
+        // Esconde botões painel para acesso parcial
+        document.querySelectorAll(".botao-painel").forEach((btn) => (btn.style.display = "none"));
+      } else {
+        document.querySelectorAll(".botao-painel").forEach((btn) => (btn.style.display = "block"));
+      }
+    }
+
+    // Logout ao clicar na foto do perfil
+    document.getElementById("areaPerfil").addEventListener("click", () => {
+      if (confirm("Deseja realmente desconectar?")) {
+        logout();
+      }
+    });
+
+    function logout() {
+      usuarioAtual = null;
+      localStorage.removeItem("usuarioAtual");
+
+      // Oculta menu e área perfil e telas internas
+      document.getElementById("menuPrincipal").style.display = "none";
+      document.getElementById("areaPerfil").style.display = "none";
+
+      document.querySelectorAll("section").forEach((sec) => {
+        if (sec.id !== "telaLogin") {
+          sec.classList.remove("active");
+          sec.style.display = "none";
+        }
+      });
+
+      // Exibe tela de login
+      const telaLogin = document.getElementById("telaLogin");
+      telaLogin.classList.add("active");
+      telaLogin.style.display = "block";
+
+      // Limpa campos de login
+      document.getElementById("inputUsuario").value = "";
+      document.getElementById("inputSenha").value = "";
+    }
+
+    // Dados e funções principais para estoque e vendas
+    let estoque = JSON.parse(localStorage.getItem("zk9_estoque")) || [];
+    let vendas = JSON.parse(localStorage.getItem("zk9_vendas")) || [];
 
     function salvarDados() {
-      localStorage.setItem('estoque', JSON.stringify(estoque));
-      localStorage.setItem('vendas', JSON.stringify(vendas));
+      localStorage.setItem("zk9_estoque", JSON.stringify(estoque));
+      localStorage.setItem("zk9_vendas", JSON.stringify(vendas));
     }
 
     function atualizarTabelas() {
-      const tabelaEstoque = document.getElementById('tabelaEstoque');
-      const tabelaVendas = document.getElementById('tabelaVendas');
-      const produtoVenda = document.getElementById('produtoVenda');
+      const tabelaEstoque = document.getElementById("tabelaEstoque");
+      const tabelaVendas = document.getElementById("tabelaVendas");
+      const produtoVenda = document.getElementById("produtoVenda");
 
-      // Atualiza Estoque
-      tabelaEstoque.innerHTML = '<tr><th>Produto</th><th>Quantidade</th><th>Preço (R$)</th></tr>';
-      produtoVenda.innerHTML = '';
+      tabelaEstoque.innerHTML =
+        "<tr><th>Código</th><th>Produto</th><th>Quantidade</th><th>Preço (R$)</th></tr>";
+      produtoVenda.innerHTML = "";
       estoque.forEach((item, index) => {
-        tabelaEstoque.innerHTML += `<tr><td>${item.nome}</td><td>${item.quantidade}</td><td>${item.preco.toFixed(2)}</td></tr>`;
+        tabelaEstoque.innerHTML += `<tr><td>${item.codigo}</td><td>${item.nome}</td><td>${item.quantidade}</td><td>${item.preco.toFixed(
+          2
+        )}</td></tr>`;
         produtoVenda.innerHTML += `<option value="${index}">${item.nome}</option>`;
       });
 
-      // Atualiza Vendas
-      tabelaVendas.innerHTML = '<tr><th>Produto</th><th>Quantidade</th><th>Preço Total</th><th>Data</th></tr>';
-      vendas.forEach(v => {
-        tabelaVendas.innerHTML += `<tr><td>${v.produto}</td><td>${v.quantidade}</td><td>R$ ${v.total.toFixed(2)}</td><td>${v.data}</td></tr>`;
+      tabelaVendas.innerHTML =
+        "<tr><th>Produto</th><th>Quantidade</th><th>Preço Total</th><th>Data</th></tr>";
+      vendas.forEach((v) => {
+        tabelaVendas.innerHTML += `<tr><td>${v.produto}</td><td>${v.quantidade}</td><td>R$ ${v.total.toFixed(
+          2
+        )}</td><td>${v.data}</td></tr>`;
       });
     }
 
     function adicionarProduto() {
-      const nome = document.getElementById('nomeProduto').value.trim();
-      const quantidade = parseInt(document.getElementById('quantidadeProduto').value);
-      const preco = parseFloat(document.getElementById('precoProduto').value);
+      const codigo = document.getElementById("codigoProduto").value.trim();
+      const nome = document.getElementById("nomeProduto").value.trim();
+      const quantidade = parseInt(document.getElementById("quantidadeProduto").value);
+      const preco = parseFloat(document.getElementById("precoProduto").value);
 
-      if (!nome || isNaN(quantidade) || isNaN(preco)) {
+      if (!codigo || !nome || isNaN(quantidade) || isNaN(preco)) {
         alert("Preencha todos os campos corretamente.");
         return;
       }
 
-      const existente = estoque.find(p => p.nome.toLowerCase() === nome.toLowerCase());
+      const existente = estoque.find((p) => p.codigo === codigo);
       if (existente) {
         existente.quantidade += quantidade;
+        existente.nome = nome;
         existente.preco = preco;
       } else {
-        estoque.push({ nome, quantidade, preco });
+        estoque.push({ codigo, nome, quantidade, preco });
       }
 
       salvarDados();
@@ -156,8 +452,8 @@
     }
 
     function realizarVenda() {
-      const index = parseInt(document.getElementById('produtoVenda').value);
-      const quantidade = parseInt(document.getElementById('quantidadeVenda').value);
+      const index = parseInt(document.getElementById("produtoVenda").value);
+      const quantidade = parseInt(document.getElementById("quantidadeVenda").value);
       if (isNaN(index) || isNaN(quantidade) || quantidade <= 0) {
         alert("Selecione um produto e uma quantidade válida.");
         return;
@@ -175,22 +471,37 @@
         produto: produto.nome,
         quantidade,
         total,
-        data: new Date().toLocaleString()
+        data: new Date().toLocaleString(),
       });
 
       salvarDados();
       atualizarTabelas();
     }
 
+    // Controla navegação entre abas
+
     function mostrarAba(id) {
-      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
+      document.querySelectorAll("section").forEach((sec) => {
+        if (sec.id !== "telaLogin" && sec.id !== "telaInicial") {
+          sec.classList.remove("active");
+          sec.style.display = "none";
+        }
+      });
 
-      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
+      const aba = document.getElementById(id);
+      if (aba) {
+        aba.classList.add("active");
+        aba.style.display = "block";
+      }
+
+      // Atualiza botão ativo do menu
+      document.querySelectorAll("nav button").forEach((btn) => btn.classList.remove("active"));
+      const botao = [...document.querySelectorAll("nav button")].find((b) =>
+        b.textContent.toLowerCase().includes(id.replace("aba", "").toLowerCase())
+      );
+      if (botao) botao.classList.add("active");
     }
-
-    atualizarTabelas();
   </script>
 </body>
+
 </html>

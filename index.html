@@ -127,7 +127,6 @@ select {
   transition: border-color 0.3s ease;
   width: 100%;
   max-width: 400px; /* limita largura para inputs e botões */
-  box-sizing: border-box;
 
 }
 
@@ -146,6 +145,7 @@ button {
   font-weight: 700;
   transition: background-color 0.3s ease;
   max-width: 400px;
+
 }
 
 button:hover {
@@ -163,6 +163,7 @@ table {
   box-shadow: 0 0 10px rgba(141, 0, 0, 0.5);
   margin-left: auto;
   margin-right: auto;
+  
 }
 
 th,
@@ -202,16 +203,14 @@ section {
   padding: 20px;
   border-radius: 10px;
   box-sizing: border-box;
-  box-shadow: 0 0 10px rgba(141, 0, 0, 0.4); /* sombra leve para destacar */
+  box-shadow: 0 0 10px rgba(141, 0, 0, 0.4);
+  border: 5px solid var(--destaque);
+
 }
 
 section.active {
   display: block;
-}
-
-
-.botao-painel {
-  /* Você pode esconder este botão para usuários limitados via JS */
+  
 }
 
 /* Scroll customizado */
@@ -267,7 +266,7 @@ section.active {
     <input type="number" id="precoProduto" placeholder="Preço" />
     <button onclick="adicionarProduto()">Adicionar</button>
 
-    <hr />
+    <hr/>
 
     <h2>Estoque Atual</h2>
     <table id="tabelaEstoque">

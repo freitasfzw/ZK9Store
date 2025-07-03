@@ -234,11 +234,6 @@ section.active {
 </head>
 
 <body>
-  <div id="titlebar">
-  <button id="min-btn">_</button>
-  <button id="max-btn">🗖</button>
-  <button id="close-btn">X</button>
-</div>
   
   <h1>Sistema de Controle ZK9 Store</h1>
 
@@ -509,24 +504,6 @@ section.active {
       if (botao) botao.classList.add("active");
     }
 
-    const { remote } = require('electron');
-const win = remote.getCurrentWindow();
-
-document.getElementById('min-btn').addEventListener('click', () => {
-  win.minimize();
-});
-
-document.getElementById('max-btn').addEventListener('click', () => {
-  if (win.isMaximized()) {
-    win.unmaximize();
-  } else {
-    win.maximize();
-  }
-});
-
-document.getElementById('close-btn').addEventListener('click', () => {
-  win.close();
-});
   </script>
 </body>
 

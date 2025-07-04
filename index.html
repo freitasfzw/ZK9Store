@@ -6,236 +6,307 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" href="file.png" type="image/x-icon">
   <title>ZK9 Store - Sistema</title>
-<style>
-  :root {
-  /* Cor principal */
-  --cor-principal: #8d0000;
+  <style>
+    /* =======================================
+   VARIÁVEIS DE TEMA (ROOT)
+======================================= */
+    :root {
+      --cor-principal: #8d0000;
+      --vermelho-escuro: #660000;
+      --vermelho-medio: #a30000;
+      --vermelho-claro: #c73333;
 
-  /* Tons de vermelho escuro */
-  --vermelho-escuro: #660000;
-  --vermelho-medio: #a30000;
-  --vermelho-claro: #c73333;
+      --fundo-principal: #121212;
+      --fundo-secundario: #252525;
+      --fundo-terciario: #4b4b4b;
 
-  /* Fundo escuro */
-  --fundo-principal: #121212;
-  --fundo-secundario: #252525;
-  --fundo-terciario: #4b4b4b;
+      --texto-principal: #ffffff;
+      --texto-secundario: #cccccc;
+      --texto-terciario: #999999;
 
-  /* Texto */
-  --texto-principal: #ffffff;
-  --texto-secundario: #cccccc;
-  --texto-terciario: #999999;
+      --borda-clara: #333333;
+      --borda-escura: #1a1a1a;
 
-  /* Bordas e detalhes */
-  --borda-clara: #333333;
-  --borda-escura: #1a1a1a;
+      --hover-cor: #b70000;
+      --destaque: #ff4d4d;
+    }
 
-  /* Destaques e hover */
-  --hover-cor: #b70000;
-  --destaque: #ff4d4d;
-}
+    /* =======================================
+   ESTILIZAÇÃO GERAL
+======================================= */
+    body {
+      background-color: var(--fundo-principal);
+      color: var(--texto-principal);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+    }
 
-body {
-  background-color: var(--fundo-principal);
-  color: var(--texto-principal);
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  margin: 0;
-  min-height: 100vh;
-  min-width: 100vw; /* garante largura total */
-  display: flex;
-  flex-direction: column;
-  /* remove align-items: center para evitar centralização horizontal */
-  /* adiciona alinhamento padrão */
-  align-items: stretch; 
-}
+    /* =======================================
+   ÁREA DO PERFIL (CANTO SUPERIOR DIREITO)
+======================================= */
+    #areaPerfil {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 100;
+    }
 
-/* Foto do perfil no topo direito */
-#areaPerfil {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-  display: none;
-  align-items: center;
-  gap: 10px;
-  user-select: none;
-  z-index: 100;
-}
+    #fotoPerfil {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--cor-principal);
+      object-fit: cover;
+      transition: box-shadow 0.3s ease;
+    }
 
-#fotoPerfil {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid var(--cor-principal);
-  object-fit: cover;
-  transition: box-shadow 0.3s ease;
-}
+    #areaPerfil:hover #fotoPerfil {
+      box-shadow: 0 0 10px var(--cor-principal);
+    }
 
-#areaPerfil:hover #fotoPerfil {
-  box-shadow: 0 0 10px var(--cor-principal);
-}
+    #nomeUsuario {
+      font-weight: 700;
+      color: var(--cor-principal);
+    }
 
-#nomeUsuario {
-  font-weight: 700;
-  color: var(--cor-principal);
-}
+    /* =======================================
+   MENU DE NAVEGAÇÃO
+======================================= */
+    /* === MENU LATERAL ESQUERDO (MINIMIZÁVEL) === */
+    .menuLateral {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background-color: var(--fundo-secundario);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding-top: 80px;
+      width: 60px;
+      overflow-x: hidden;
+      transition: width 0.3s ease;
+      z-index: 99;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
 
-nav {
-  margin-bottom: 20px;
-  display: none;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
+    .menuLateral:hover {
+      width: 220px;
+    }
 
-nav button {
-  background-color: var(--fundo-secundario);
-  color: var(--texto-principal);
-  border: 2px solid var(--cor-principal);
-  margin: 5px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  text-align: center;
-  
-}
+    .menuLateral .menuButtao {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: none;
+      border: none;
+      color: var(--texto-principal);
 
-nav button.active,
-nav button:hover {
-  background-color: var(--cor-principal);
-  color: var(--texto-principal);
-  border-color: var(--hover-cor);
-  box-shadow: 0 0 8px var(--cor-principal);
-}
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid var(--borda-clara);
+      font-weight: bold;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      transition: background 0.3s, padding-left 0.3s;
+    }
 
-input,
-button,
-select {
-  padding: 10px;
-  margin: 8px 5px;
-  border-radius: 6px;
-  border: 1.5px solid var(--borda-clara);
-  background-color: var(--fundo-secundario);
-  color: var(--texto-principal);
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  width: 100%;
-  max-width: 400px; /* limita largura para inputs e botões */
+    .menuLateral .menuButtao .icone {
+      font-size: 20px;
+      min-width: 30px;
+      text-align: center;
+    }
 
-}
+    .menuLateral .menuButtao .texto {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
 
-input:focus,
-select:focus,
-button:focus {
-  outline: none;
-  border-color: var(--cor-principal);
-  box-shadow: 0 0 6px var(--cor-principal);
-}
+    .menuLateral:hover .menuButtao .texto {
+      opacity: 1;
+    }
 
-button {
-  cursor: pointer;
-  background-color: var(--cor-principal);
-  border: none;
-  font-weight: 700;
-  transition: background-color 0.3s ease;
-  max-width: 400px;
+    .menuLateral .menuButtao:hover,
+    .menuLateral .menuButtao.active {
+      background-color: var(--cor-principal);
+      color: var(--texto-principal);
 
-}
+    }
 
-button:hover {
-  background-color: var(--hover-cor);
-}
 
-table {
-  width: 100%;
-  max-width: 900px; /* limita largura máxima */
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: var(--fundo-secundario);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(141, 0, 0, 0.5);
-  margin-left: auto;
-  margin-right: auto;
-  
-}
+    /* =======================================
+   CAMPOS DE FORMULÁRIO GERAL
+======================================= */
+    input,
+    button,
+    select {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      margin: 8px 5px;
+      border-radius: 6px;
+      border: 1.5px solid var(--borda-clara);
+      background-color: var(--fundo-secundario);
+      color: var(--texto-principal);
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
 
-th,
-td {
-  border: 1px solid var(--borda-clara);
-  padding: 12px 15px;
-  text-align: left;
-  color: var(--texto-principal);
-}
+    input:focus,
+    select:focus,
+    button:focus {
+      outline: none;
+      border-color: var(--cor-principal);
+      box-shadow: 0 0 6px var(--cor-principal);
+    }
 
-th {
-  background-color: var(--vermelho-escuro);
-  font-weight: 700;
-}
+    button {
+      background-color: var(--cor-principal);
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-h1 {
-    text-align: center;
-  padding-bottom: 10px;
-  color: var(--texto-principal);
-  text-shadow: 0 0 6px var(--cor-principal);
-  user-select: none;
-}
-h2 {
-  text-align: center;
-  padding-bottom: 10px;
-  color: var(--texto-principal);
-  text-shadow: 0 0 6px var(--cor-principal);
-  user-select: none;
-}
+    button:hover {
+      background-color: var(--hover-cor);
+    }
 
-section {
-  display: none;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto 40px auto;
-  background-color: var(--fundo-secundario); /* fundo secundário para as abas */
-  padding: 20px;
-  border-radius: 10px;
-  box-sizing: border-box;
-  box-shadow: 0 0 10px rgba(141, 0, 0, 0.4);
-  border: 5px solid var(--destaque);
+    /* =======================================
+   TABELAS
+======================================= */
+    table {
+      width: 100%;
+      max-width: 900px;
+      margin: 20px auto 0 auto;
+      background-color: var(--fundo-secundario);
+      border-collapse: collapse;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(141, 0, 0, 0.5);
+      overflow: hidden;
+    }
 
-}
+    th,
+    td {
+      border: 1px solid var(--borda-clara);
+      padding: 12px 15px;
+      text-align: left;
+      color: var(--texto-principal);
+    }
 
-section.active {
-  display: block;
-  
-}
+    th {
+      background-color: var(--vermelho-escuro);
+      font-weight: 700;
+    }
 
-/* Scroll customizado */
-::-webkit-scrollbar {
-  width: 8px;
-}
+    /* =======================================
+   TÍTULOS
+======================================= */
+    h1,
+    h2 {
+      text-align: center;
+      padding-bottom: 10px;
+      color: var(--texto-principal);
+      text-shadow: 0 0 6px var(--cor-principal);
+      user-select: none;
+    }
 
-::-webkit-scrollbar-track {
-  background: var(--fundo-secundario);
-  border-radius: 10px;
-}
+    /* =======================================
+   ABAS / SECTIONS GERAIS
+======================================= */
+    section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 40px 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      background-color: var(--fundo-secundario);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(141, 0, 0, 0.4);
+      box-sizing: border-box;
+    }
 
-::-webkit-scrollbar-thumb {
-  background-color: var(--cor-principal);
-  border-radius: 10px;
-  border: 2px solid var(--fundo-secundario);
-}
+    section.active {
+      display: block;
+    }
 
-</style>
+    /* =======================================
+   TELA DE LOGIN
+======================================= */
+    #telaLogin {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 40px 20px;
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: var(--fundo-secundario);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(141, 0, 0, 0.5);
+      animation: fadeInLogin 0.6s ease;
+    }
+
+    #telaLogin h2 {
+      font-size: 1.8rem;
+      color: var(--cor-principal);
+      text-shadow: 0 0 10px var(--cor-principal);
+      margin-bottom: 10px;
+    }
+
+    @keyframes fadeInLogin {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =======================================
+   SCROLL PERSONALIZADO
+======================================= */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--fundo-secundario);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--cor-principal);
+      border-radius: 10px;
+      border: 2px solid var(--fundo-secundario);
+    }
+  </style>
 </head>
 
 <body>
-  
+  <br>
+  <br>
+
   <h1>Sistema de Controle ZK9 Store</h1>
 
+  <br>
+  <br>
   <!-- Área do Perfil -->
   <div id="areaPerfil" title="Clique para desconectar">
     <img id="fotoPerfil" src="" alt="Foto do Perfil" />
@@ -250,11 +321,23 @@ section.active {
     <button onclick="fazerLogin()">Entrar</button>
   </section>
 
-  <!-- Menu de navegação -->
-  <nav id="menuPrincipal">
-    <button onclick="mostrarAba('abaAdicionar')">Adicionar Produto</button>
-    <button onclick="mostrarAba('abaVenda')">Registrar Venda</button>
-    <button onclick="mostrarAba('abaHistorico')" class="botao-painel">Painel de Controle</button>
+  <nav id="menuLateral" class="menuLateral">
+    <button class="menuButtao" onclick="mostrarAba('abaAdicionar')">
+      <span class="icone">➕</span>
+      <span class="texto">Adicionar</span>
+    </button>
+    <button class="menuButtao" onclick="mostrarAba('abaVenda')">
+      <span class="icone">🛒</span>
+      <span class="texto">Vender</span>
+    </button>
+    <button class="menuButtao" onclick="mostrarAba('abaHistorico')">
+      <span class="icone">🕘</span>
+      <span class="texto">Backup</span>
+    </button>
+    <button class="menuButtao" onclick="mostrarAba('abaHistorico')">
+      <span class="icone">⚙️</span>
+      <span class="texto">Painel</span>
+    </button>
   </nav>
 
   <!-- Abas -->
@@ -266,7 +349,7 @@ section.active {
     <input type="number" id="precoProduto" placeholder="Preço" />
     <button onclick="adicionarProduto()">Adicionar</button>
 
-    <hr/>
+    <hr />
 
     <h2>Estoque Atual</h2>
     <table id="tabelaEstoque">
@@ -298,6 +381,12 @@ section.active {
     </table>
   </section>
 
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   <script>
     // Usuários e permissões
     let usuarioAtual = null;
@@ -340,8 +429,8 @@ section.active {
       document.getElementById("telaLogin").classList.remove("active");
       document.getElementById("telaLogin").style.display = "none";
 
-      const menu = document.getElementById("menuPrincipal");
-      menu.style.display = "block";
+      const menu = document.getElementById("menuLateral");
+      menu.style.display = "flex";
 
       // Atualiza foto e nome do perfil e mostra área do perfil
       const fotoPerfil = document.getElementById("fotoPerfil");
@@ -352,8 +441,10 @@ section.active {
 
       ajustarInterfacePorUsuario();
       atualizarTabelas();
-    }
 
+      // Mostra a primeira aba automaticamente
+      mostrarAba('abaAdicionar');
+    }
     function ajustarInterfacePorUsuario() {
       if (usuarios[usuarioAtual].acesso === "parcial") {
         // Esconde botões painel para acesso parcial
@@ -375,7 +466,7 @@ section.active {
       localStorage.removeItem("usuarioAtual");
 
       // Oculta menu e área perfil e telas internas
-      document.getElementById("menuPrincipal").style.display = "none";
+      document.getElementById("menuLateral").style.display = "none";
       document.getElementById("areaPerfil").style.display = "none";
 
       document.querySelectorAll("section").forEach((sec) => {
@@ -482,6 +573,7 @@ section.active {
     // Controla navegação entre abas
 
     function mostrarAba(id) {
+      // Esconde todas as seções exceto login e telaInicial
       document.querySelectorAll("section").forEach((sec) => {
         if (sec.id !== "telaLogin" && sec.id !== "telaInicial") {
           sec.classList.remove("active");
@@ -489,18 +581,25 @@ section.active {
         }
       });
 
+      // Mostra a aba selecionada
       const aba = document.getElementById(id);
       if (aba) {
         aba.classList.add("active");
         aba.style.display = "block";
       }
 
-      // Atualiza botão ativo do menu
-      document.querySelectorAll("nav button").forEach((btn) => btn.classList.remove("active"));
-      const botao = [...document.querySelectorAll("nav button")].find((b) =>
-        b.textContent.toLowerCase().includes(id.replace("aba", "").toLowerCase())
-      );
-      if (botao) botao.classList.add("active");
+      // Remove a classe active de todos os botões do menu
+      const botoes = document.querySelectorAll("nav button");
+      botoes.forEach((btn) => btn.classList.remove("active"));
+
+      // Mapeia os botões e ativa o que corresponde à aba pelo atributo onclick
+      botoes.forEach((btn) => {
+        const onClickValue = btn.getAttribute("onclick");
+        if (onClickValue && onClickValue.includes(id)) {
+          btn.classList.add("active");
+        }
+      });
+
     }
 
   </script>
